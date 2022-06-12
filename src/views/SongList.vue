@@ -36,9 +36,10 @@
           >
             <div class="d-flex">
               <v-avatar
-                class="ma-3"
+                class="ma-3 video-bttn position-relative"
                 size="130"
                 rounded
+                @click="playVideo()"
               >
                 <v-img :src="list.artworkUrl100" class="images"></v-img>
               </v-avatar>
@@ -88,15 +89,26 @@
             Load More
           </v-btn>
         </div>
-
-
     </div>
     </v-main>
       <v-dialog
         v-model="dialog"
         fullscreen
         hide-overlay
-      >
+      > <v-toolbar
+        style="background: rgba(0,0,0,0.7);"
+        >
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn
+              dark
+              text
+              @click="dialog = false"
+            >
+               <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
         <div class="relative" style="position: fixed;width: 100%;height: 100%;background: rgba(0,0,0,0.7);">
           <div class="text-center title-search">
           <h2>Search</h2>
@@ -133,15 +145,10 @@
               <form v-on:submit.prevent="onSearch">
                <input type="text" v-model="search" class="searchTerm" placeholder="Search" />
               </form>
-            </div>
-                  
-                  
+            </div>   
           </div>
         </div>
-          
-        
       </v-dialog>
-
   </v-app>
 </template>
 
@@ -179,7 +186,6 @@ import axios from 'axios'
                   this.lists = data.results
                   this.loading = false
                   this.dialog = false
-                  console.log(this.lists)
                 } catch (error) {
                   console.log(error)
                   this.loading = false
@@ -203,7 +209,6 @@ import axios from 'axios'
                   this.lists = data.results
                   this.loading = false
                   this.dialog = false
-                  console.log(this.lists)
                 } catch (error) {
                   console.log(error)
                   this.loading = false
@@ -211,8 +216,11 @@ import axios from 'axios'
         },
         vDialog(){
           this.search = ''
-          this.name = ''
+          // this.name = ''
           this.dialog = true
+        },
+        playVideo(){
+          console.log('no url to play')
         }
       }
   }
@@ -230,7 +238,7 @@ header{
   background-image: linear-gradient(100deg, #712bda, #a45deb 100%);
 }
 .card__lists:hover {
-    transition: all 0.2s ease-out;
+    // transition: all 0.2s ease-out;
     box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
     border: 1px solid #cccccc;
     background-color: white;
@@ -321,5 +329,43 @@ header{
   font-weight: bold;
   font-size: 20px;
   margin-left: 5px;
+}
+
+.video-btn i {
+    line-height: 60px;
+    font-size: 21px
+}
+
+.video-bttn {
+    position: relative
+}
+
+.video-bttn:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    margin-left: -30px;
+    margin-top: -30px;
+    background-image: url(../assets/play.png);
+    background-size: contain;
+    display: block;
+    width: 60px;
+    height: 60px
+}
+
+.video-bttn.default {
+    background-color: rgba(255, 255, 255, .2);
+    border-radius: 50% !important;
+    display: inline-block;
+    width: 60px;
+    height: 60px
+}
+
+.video-bttn.default:after {
+    margin-left: 0;
+    position: relative;
+    left: 0
 }
 </style>
